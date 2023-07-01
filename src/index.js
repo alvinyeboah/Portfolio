@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const app = express();
 const port = 8080;
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("src"));
 app.use(express.urlencoded({ extended: false }));
 
@@ -14,15 +15,15 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: "alvinyeboah5@gmail.com",
-    pass: "ocvdtvcredakxejr"
-  }
+    pass: "ocvdtvcredakxejr",
+  },
 });
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-app.post("/", (req, res) => {
+app.post("/", bodyParser.urlencoded({ extended: false }), (req, res) => {
   const { gname, gmail, cname, cage, message } = req.body;
 
   // Create a message object with form data
@@ -38,7 +39,7 @@ app.post("/", (req, res) => {
       
       Message: 
       ${message}
-    `
+    `,
   };
 
   // Send the email
